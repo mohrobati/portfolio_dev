@@ -10,8 +10,14 @@ const canvas = document.querySelector('canvas.webgl')
 // Scene
 const scene = new THREE.Scene()
 
-// Lights
+// Music
+let guitar = ['Am', 'C', 'D', 'F', 'Am', 'C', 'E', 'E', 'Am', 'C', 'D', 'F', 'Am', 'E']
+let curr_guitar = 0
 
+let piano = ['G', 'Bb', 'C', 'G', 'Bb', 'Db', 'C', 'G', 'Bb', 'C', 'Bb', 'G']
+let curr_piano = 0
+
+// Lights
 const pointLight1 = new THREE.PointLight(0xdbffff, 1);
 pointLight1.position.set(2,3,-3)
 scene.add(pointLight1)
@@ -205,10 +211,24 @@ let onClick = (event) => {
             comp = !comp
         }
         if (!comp && intersects[0].object.name.startsWith("keys")) {
-            window.open("https://www.youtube.com/watch?v=pDZ27zU2X8M").focus();
+            new Audio("piano/"+(piano[curr_piano%12])+".mp3").play()
+            curr_piano++
         }
-        if (!comp && intersects[0].object.name.startsWith("Plane")) {
-            window.open("https://open.spotify.com/track/0NP56wD9jIweuBGHa4cfqQ").focus();
+        if (!comp && ['Plane', 'Cylinder'].some(word => intersects[0].object.name.startsWith(word))) {
+            new Audio("guitar/"+(guitar[curr_guitar%14])+".mp3").play()
+            curr_guitar++
+        }
+        if (!comp && intersects[0].object.name.startsWith("botella")) {
+            window.open('https://en.wikipedia.org/wiki/Teetotalism', '_blank')
+        }
+        if (!comp && intersects[0].object.name.startsWith("cama_Material")) {
+            window.open('https://en.wikipedia.org/wiki/Pillow', '_blank')
+        }
+        if (!comp && intersects[0].object.name.startsWith("Libros_17")) {
+            window.open('https://en.wikipedia.org/wiki/Green_Book_(film)', '_blank')
+        }
+        if (!comp && ['Object_2001', 'Object_3001', 'Icosphere'].some(word => intersects[0].object.name.startsWith(word))) {
+            window.open('assets/photo.jpg', '_blank')
         }
         if (comp && intersects[0].object.name.startsWith("Pared")) {
             gsap.to(camera.position, {
